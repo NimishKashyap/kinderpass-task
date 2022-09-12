@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import cookieSession from "cookie-session";
+import cors from "cors";
 import "express-async-errors";
 
 import { errorHandler } from "@nimishkashyap031/common";
@@ -16,7 +17,7 @@ import { getEmpRouter } from "./routes/get-emp";
 const app = express();
 
 app.set("trust proxy", true);
-
+app.use(cors());
 app.use(express.json());
 app.use(
   cookieSession({
