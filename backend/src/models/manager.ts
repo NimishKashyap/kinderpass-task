@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Password } from "../services/password";
 
+// Interface for manager attributes
 interface ManagerAttrs {
   firstname: string;
   lastname: string;
@@ -28,6 +29,8 @@ interface ManagerDoc extends mongoose.Document {
   email: string;
   password: string;
 }
+
+// Actual mongoose schema
 const managerSchema = new mongoose.Schema(
   {
     firstname: {
@@ -72,9 +75,12 @@ const managerSchema = new mongoose.Schema(
   }
 );
 
+// Added build method to enforce typechecking (both for tsc and vscode)
 managerSchema.statics.build = (attrs: ManagerAttrs) => {
   return new Manager(attrs);
 };
+
+// Hashing of passwords
 managerSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
     const hashed = await Password.toHash(this.get("password"));

@@ -26,8 +26,10 @@ function signup() {
       email,
       password,
     },
+    // Pass function as a callback
     onSuccess: () => Router.push("/"),
   });
+
   const onSubmit = async (event) => {
     event.preventDefault();
     await doRequest();
@@ -94,6 +96,7 @@ function signup() {
           className="form-control"
         />
       </div>
+      {/* Display errors coming from backend */}
       {errors}
 
       <button type={"submit"} className="btn btn-primary">

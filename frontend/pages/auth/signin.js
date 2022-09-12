@@ -6,6 +6,7 @@ function signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // TODO: Extract urls to .env or constants.js
   const { doRequest, errors } = useRequest({
     url: "http://localhost:5000/api/manager/signin",
     method: "post",
