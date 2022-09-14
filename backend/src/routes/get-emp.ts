@@ -8,34 +8,24 @@ import { Employee } from "../models/employee";
 
 const router = express.Router();
 
-router.get(
-  "/api/emp/all",
-  currentUser,
-  requireAuth,
-  async (req: Request, res: Response) => {
-    const allEmployees = await Employee.find({});
-    if (!allEmployees) {
-      throw new Error("Something went wrong");
-    }
-
-    res.status(200).send(allEmployees);
+router.get("/api/emp/all", async (req: Request, res: Response) => {
+  const allEmployees = await Employee.find({});
+  if (!allEmployees) {
+    throw new Error("Something went wrong");
   }
-);
 
-router.get(
-  "/api/emp/:empid",
-  currentUser,
-  requireAuth,
-  async (req: Request, res: Response) => {
-    const { empid } = req.params;
+  res.status(200).send(allEmployees);
+});
 
-    const employee = await Employee.findOne({ empId: empid });
+router.get("/api/emp/:empid", async (req: Request, res: Response) => {
+  const { empid } = req.params;
 
-    if (!employee) {
-      throw new NotFoundError();
-    }
-    res.status(200).send(employee);
+  const employee = await Employee.findOne({ empId: empid });
+
+  if (!employee) {
+    throw new NotFoundError();
   }
-);
+  res.status(200).send(employee);
+});
 
 export { router as getEmpRouter };

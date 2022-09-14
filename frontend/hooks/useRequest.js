@@ -9,10 +9,12 @@ const useRequest = ({ url, method, body, onSuccess }) => {
       setErrors(null);
       const response = await axios[method](url, body);
       if (onSuccess) {
+        console.log(response);
         onSuccess(response.data);
       }
       return response.data;
     } catch (err) {
+      console.log(err);
       setErrors(
         <div className="alert alert-danger">
           <h4>Ooops...</h4>

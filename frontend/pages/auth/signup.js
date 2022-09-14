@@ -15,7 +15,7 @@ function signup() {
 
   // TODO: Extract the URL Away to .env or constants.js
   const { doRequest, errors } = useRequest({
-    url: "http://localhost:5000/api/manager/signup",
+    url: "https://localhost:5000/api/manager/signup",
     method: "post",
     body: {
       firstname,
@@ -32,7 +32,8 @@ function signup() {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await doRequest();
+    const { jwt } = await doRequest();
+    localStorage.setItem("jwt", jwt);
   };
 
   return (

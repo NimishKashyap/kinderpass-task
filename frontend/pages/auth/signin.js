@@ -14,11 +14,14 @@ function signup() {
       email,
       password,
     },
-    onSuccess: () => Router.push("/"),
+    onSuccess: () => {
+      Router.push("/");
+    },
   });
   const onSubmit = async (event) => {
     event.preventDefault();
-    await doRequest();
+    const { jwt } = await doRequest();
+    localStorage.setItem("jwt", jwt);
   };
 
   return (

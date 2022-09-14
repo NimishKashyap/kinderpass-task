@@ -33,6 +33,11 @@
   text-decoration: none;
 }
 
+.hover:hover {
+  cursor: pointer;
+  color: blue;
+}
+
 .title a:hover,
 .title a:focus,
 .title a:active {

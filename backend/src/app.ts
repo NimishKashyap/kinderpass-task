@@ -13,11 +13,12 @@ import { signupRouter } from "./routes/signup";
 import { createEmpRouter } from "./routes/create-emp";
 import { updateEmpRouter } from "./routes/update-emp";
 import { getEmpRouter } from "./routes/get-emp";
+import { deleteEmpRouter } from "./routes/delete-emp";
 
 const app = express();
 
 app.set("trust proxy", true);
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(express.json());
 app.use(
   cookieSession({
@@ -33,6 +34,7 @@ app.use(signupRouter);
 app.use(createEmpRouter);
 app.use(updateEmpRouter);
 app.use(getEmpRouter);
+app.use(deleteEmpRouter);
 
 app.all("*", async (req: Request, res: Response) => {
   throw new NotFoundError();
