@@ -18,3 +18,16 @@ docker-compose up
 cd backend
 npm i/yarn
 ```
+
+### Tech-stack used
+
+Backend:
+
+1. ExpressJS + NodeJS
+2. MongoDB in Docker
+
+Frontend:
+
+1. ReactJS
+2. React-Bootstrap (UI)
+3. Axios
