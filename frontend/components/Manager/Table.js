@@ -15,6 +15,7 @@ function TableBodyItem({ item, index }) {
   const [show, setShow] = useState(false);
   const [toast, setToast] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
 
   const [empId, setEmpId] = useState(item.empId);
   const [firstname, setFirstname] = useState(item.firstname);
@@ -22,6 +23,12 @@ function TableBodyItem({ item, index }) {
   const [city, setCity] = useState(item.city);
   const [address, setAddress] = useState(item.address);
   const [mobile, setMobile] = useState(item.mobile);
+
+  let jwt;
+
+  if (typeof window !== "undefined") {
+    jwt = localStorage.getItem("jwt");
+  }
 
   const handleDelete = () => {
     setModal(true);
@@ -35,6 +42,26 @@ function TableBodyItem({ item, index }) {
   });
   const handleConfirmDelete = async () => {
     await doRequest();
+  };
+  const { doRequest: update, errors: error } = useRequest({
+    url: `http://localhost:5000/api/emp/update/${item.empId}`,
+    method: "put",
+    body: {
+      empId,
+      firstname,
+      lastname,
+      city,
+      address,
+      mobile,
+      jwt,
+    },
+    onSuccess: () => {
+      window.location.href = "/";
+    },
+  });
+
+  const handleUpdate = async () => {
+    await update();
   };
   return (
     <>
@@ -55,6 +82,32 @@ function TableBodyItem({ item, index }) {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* Update Confirmation Modal*/}
+      <Modal show={updateModal} onHide={() => setUpdateModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure to update?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Modal.Dialog>Employee Id: {item.empId}</Modal.Dialog>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShow(true);
+              setUpdateModal(false);
+            }}
+          >
+            No
+          </Button>
+          <Button variant="danger" onClick={handleUpdate}>
+            Yes
+          </Button>
+        </Modal.Footer>
+        {errors}
+      </Modal>
+
+      {/* Actual Update modal */}
       <Modal show={show} onHide={() => setShow(false)}>
         <Toast
           delay={3000}
@@ -137,10 +190,11 @@ function TableBodyItem({ item, index }) {
           <Button
             variant="primary"
             onClick={() => {
-              setConfirm(true);
+              setShow(false);
+              setUpdateModal(true);
             }}
           >
-            Add
+            Update
           </Button>
         </Modal.Footer>
       </Modal>

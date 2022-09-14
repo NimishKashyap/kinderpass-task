@@ -18,6 +18,8 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
+    console.log("Inside Signup");
+
     const { firstname, lastname, address, dob, company, email, password } =
       req.body;
     const existingUser = await User.findOne({ email });
@@ -49,6 +51,7 @@ router.post(
 
     // Store it on session object
     req.session = { jwt: userJwt };
+    console.log("At Last");
 
     res.status(201).send({ jwt: userJwt });
   }

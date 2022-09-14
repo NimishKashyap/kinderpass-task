@@ -13,9 +13,17 @@ function signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  let jwt = "";
+  if (typeof window !== "undefined") {
+    jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      jwt = "123";
+    }
+  }
+
   // TODO: Extract the URL Away to .env or constants.js
   const { doRequest, errors } = useRequest({
-    url: "https://localhost:5000/api/manager/signup",
+    url: "http://localhost:5000/api/manager/signup",
     method: "post",
     body: {
       firstname,
@@ -25,6 +33,7 @@ function signup() {
       dob: dob.toString(),
       email,
       password,
+      jwt,
     },
     // Pass function as a callback
     onSuccess: () => Router.push("/"),
