@@ -10,13 +10,18 @@ import useRequest from "../../hooks/useRequest";
 import Toast from "react-bootstrap/Toast";
 import Form from "react-bootstrap/Form";
 
-function TableBodyItem({ item, index }) {
+/**
+ * Component that renders each Table row with
+ * update and delete functionalities
+ */
+function TableBodyItem({ item }) {
+  // State variables for Modals
   const [modal, setModal] = useState(false);
   const [show, setShow] = useState(false);
   const [toast, setToast] = useState(false);
-  const [confirm, setConfirm] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
 
+  // State variables for controlled inputs
   const [empId, setEmpId] = useState(item.empId);
   const [firstname, setFirstname] = useState(item.firstname);
   const [lastname, setLastname] = useState(item.lastname);
@@ -24,8 +29,8 @@ function TableBodyItem({ item, index }) {
   const [address, setAddress] = useState(item.address);
   const [mobile, setMobile] = useState(item.mobile);
 
+  // Check if JWT is present or not (with server-side and client-side handling)
   let jwt;
-
   if (typeof window !== "undefined") {
     jwt = localStorage.getItem("jwt");
   }
@@ -33,6 +38,8 @@ function TableBodyItem({ item, index }) {
   const handleDelete = () => {
     setModal(true);
   };
+
+  // Hook to make delete request to backend
   const { doRequest, errors } = useRequest({
     url: `http://localhost:5000/api/emp/${item.empId}/delete`,
     method: "delete",
@@ -43,6 +50,8 @@ function TableBodyItem({ item, index }) {
   const handleConfirmDelete = async () => {
     await doRequest();
   };
+
+  // Hook to make update request to backend
   const { doRequest: update, errors: error } = useRequest({
     url: `http://localhost:5000/api/emp/update/${item.empId}`,
     method: "put",
@@ -124,6 +133,8 @@ function TableBodyItem({ item, index }) {
         <Modal.Header closeButton>
           <Modal.Title>Update Employee</Modal.Title>
         </Modal.Header>
+
+        {/* Modal that contains the update form */}
         <Modal.Body>
           <Form>
             <Form.Group controlId="formBasicId" className="mb-3">
@@ -182,6 +193,7 @@ function TableBodyItem({ item, index }) {
             </Form.Group>
           </Form>
         </Modal.Body>
+        {/* Render errors if any */}
         {errors}
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>
@@ -198,9 +210,11 @@ function TableBodyItem({ item, index }) {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Table rows */}
       <tr>
         <td>{item.empId}</td>
-        <td>{item.firstname + item.lastname}</td>
+        <td>{item.firstname + " " + item.lastname}</td>
         <td>{item.address}</td>
         <td>{item.mobile}</td>
         <td>{item.city}</td>
@@ -227,6 +241,9 @@ function TableBodyItem({ item, index }) {
   );
 }
 
+/**
+ * Component to render whole table along with CRUD Functionalities
+ */
 export function TableComponent({ emp }) {
   const [show, setShow] = useState(false);
 
@@ -257,7 +274,7 @@ export function TableComponent({ emp }) {
         </thead>
         <tbody>
           {emp.map((item, idx) => {
-            return <TableBodyItem index={idx + 1} item={item} />;
+            return <TableBodyItem key={idx} item={item} />;
           })}
         </tbody>
       </Table>

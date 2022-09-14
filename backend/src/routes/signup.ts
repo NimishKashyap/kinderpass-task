@@ -7,6 +7,18 @@ import { Manager as User } from "../models/manager";
 
 const router = express.Router();
 
+/**
+ * Controller for /signup
+ *
+ * @param firstname string
+ * @param lastname string
+ * @param address string
+ * @param dob string
+ * @param email string
+ * @param passsword string
+ *
+ *
+ */
 router.post(
   "/api/manager/signup",
   [
@@ -18,8 +30,6 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    console.log("Inside Signup");
-
     const { firstname, lastname, address, dob, company, email, password } =
       req.body;
     const existingUser = await User.findOne({ email });
@@ -51,7 +61,6 @@ router.post(
 
     // Store it on session object
     req.session = { jwt: userJwt };
-    console.log("At Last");
 
     res.status(201).send({ jwt: userJwt });
   }

@@ -1,6 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 
+/**
+ * Custom Hook to manage axios requests
+ *
+ * errors: Contains JSX to render the errors (Used in Authentication)
+ * doRequest: function that executes the XMLHttpRequest
+ */
 const useRequest = ({ url, method, body, onSuccess }) => {
   const [errors, setErrors] = useState(null);
 
